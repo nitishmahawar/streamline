@@ -9,54 +9,217 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
+import { Route as dashboardRouteRouteImport } from './routes/(dashboard)/route'
+import { Route as authRouteRouteImport } from './routes/(auth)/route'
+import { Route as dashboardIndexRouteImport } from './routes/(dashboard)/index'
+import { Route as authSignUpRouteImport } from './routes/(auth)/sign-up'
+import { Route as authSignInRouteImport } from './routes/(auth)/sign-in'
+import { Route as authResetPasswordRouteImport } from './routes/(auth)/reset-password'
+import { Route as authOnboardingRouteImport } from './routes/(auth)/onboarding'
+import { Route as authForgotPasswordRouteImport } from './routes/(auth)/forgot-password'
+import { Route as authAcceptInvitationRouteImport } from './routes/(auth)/accept-invitation'
 import { Route as ApiRpcSplatRouteImport } from './routes/api.rpc.$'
+import { Route as ApiAuthSplatRouteImport } from './routes/api.auth.$'
 
-const IndexRoute = IndexRouteImport.update({
+const dashboardRouteRoute = dashboardRouteRouteImport.update({
+  id: '/(dashboard)',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const authRouteRoute = authRouteRouteImport.update({
+  id: '/(auth)',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const dashboardIndexRoute = dashboardIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => dashboardRouteRoute,
+} as any)
+const authSignUpRoute = authSignUpRouteImport.update({
+  id: '/sign-up',
+  path: '/sign-up',
+  getParentRoute: () => authRouteRoute,
+} as any)
+const authSignInRoute = authSignInRouteImport.update({
+  id: '/sign-in',
+  path: '/sign-in',
+  getParentRoute: () => authRouteRoute,
+} as any)
+const authResetPasswordRoute = authResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => authRouteRoute,
+} as any)
+const authOnboardingRoute = authOnboardingRouteImport.update({
+  id: '/onboarding',
+  path: '/onboarding',
+  getParentRoute: () => authRouteRoute,
+} as any)
+const authForgotPasswordRoute = authForgotPasswordRouteImport.update({
+  id: '/forgot-password',
+  path: '/forgot-password',
+  getParentRoute: () => authRouteRoute,
+} as any)
+const authAcceptInvitationRoute = authAcceptInvitationRouteImport.update({
+  id: '/accept-invitation',
+  path: '/accept-invitation',
+  getParentRoute: () => authRouteRoute,
 } as any)
 const ApiRpcSplatRoute = ApiRpcSplatRouteImport.update({
   id: '/api/rpc/$',
   path: '/api/rpc/$',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
+  id: '/api/auth/$',
+  path: '/api/auth/$',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
+  '/accept-invitation': typeof authAcceptInvitationRoute
+  '/forgot-password': typeof authForgotPasswordRoute
+  '/onboarding': typeof authOnboardingRoute
+  '/reset-password': typeof authResetPasswordRoute
+  '/sign-in': typeof authSignInRoute
+  '/sign-up': typeof authSignUpRoute
+  '/': typeof dashboardIndexRoute
+  '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/rpc/$': typeof ApiRpcSplatRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
+  '/accept-invitation': typeof authAcceptInvitationRoute
+  '/forgot-password': typeof authForgotPasswordRoute
+  '/onboarding': typeof authOnboardingRoute
+  '/reset-password': typeof authResetPasswordRoute
+  '/sign-in': typeof authSignInRoute
+  '/sign-up': typeof authSignUpRoute
+  '/': typeof dashboardIndexRoute
+  '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/rpc/$': typeof ApiRpcSplatRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
+  '/(auth)': typeof authRouteRouteWithChildren
+  '/(dashboard)': typeof dashboardRouteRouteWithChildren
+  '/(auth)/accept-invitation': typeof authAcceptInvitationRoute
+  '/(auth)/forgot-password': typeof authForgotPasswordRoute
+  '/(auth)/onboarding': typeof authOnboardingRoute
+  '/(auth)/reset-password': typeof authResetPasswordRoute
+  '/(auth)/sign-in': typeof authSignInRoute
+  '/(auth)/sign-up': typeof authSignUpRoute
+  '/(dashboard)/': typeof dashboardIndexRoute
+  '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/rpc/$': typeof ApiRpcSplatRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/api/rpc/$'
+  fullPaths:
+    | '/accept-invitation'
+    | '/forgot-password'
+    | '/onboarding'
+    | '/reset-password'
+    | '/sign-in'
+    | '/sign-up'
+    | '/'
+    | '/api/auth/$'
+    | '/api/rpc/$'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/api/rpc/$'
-  id: '__root__' | '/' | '/api/rpc/$'
+  to:
+    | '/accept-invitation'
+    | '/forgot-password'
+    | '/onboarding'
+    | '/reset-password'
+    | '/sign-in'
+    | '/sign-up'
+    | '/'
+    | '/api/auth/$'
+    | '/api/rpc/$'
+  id:
+    | '__root__'
+    | '/(auth)'
+    | '/(dashboard)'
+    | '/(auth)/accept-invitation'
+    | '/(auth)/forgot-password'
+    | '/(auth)/onboarding'
+    | '/(auth)/reset-password'
+    | '/(auth)/sign-in'
+    | '/(auth)/sign-up'
+    | '/(dashboard)/'
+    | '/api/auth/$'
+    | '/api/rpc/$'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
+  authRouteRoute: typeof authRouteRouteWithChildren
+  dashboardRouteRoute: typeof dashboardRouteRouteWithChildren
+  ApiAuthSplatRoute: typeof ApiAuthSplatRoute
   ApiRpcSplatRoute: typeof ApiRpcSplatRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
+    '/(dashboard)': {
+      id: '/(dashboard)'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof dashboardRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(auth)': {
+      id: '/(auth)'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof authRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(dashboard)/': {
+      id: '/(dashboard)/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof dashboardIndexRouteImport
+      parentRoute: typeof dashboardRouteRoute
+    }
+    '/(auth)/sign-up': {
+      id: '/(auth)/sign-up'
+      path: '/sign-up'
+      fullPath: '/sign-up'
+      preLoaderRoute: typeof authSignUpRouteImport
+      parentRoute: typeof authRouteRoute
+    }
+    '/(auth)/sign-in': {
+      id: '/(auth)/sign-in'
+      path: '/sign-in'
+      fullPath: '/sign-in'
+      preLoaderRoute: typeof authSignInRouteImport
+      parentRoute: typeof authRouteRoute
+    }
+    '/(auth)/reset-password': {
+      id: '/(auth)/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof authResetPasswordRouteImport
+      parentRoute: typeof authRouteRoute
+    }
+    '/(auth)/onboarding': {
+      id: '/(auth)/onboarding'
+      path: '/onboarding'
+      fullPath: '/onboarding'
+      preLoaderRoute: typeof authOnboardingRouteImport
+      parentRoute: typeof authRouteRoute
+    }
+    '/(auth)/forgot-password': {
+      id: '/(auth)/forgot-password'
+      path: '/forgot-password'
+      fullPath: '/forgot-password'
+      preLoaderRoute: typeof authForgotPasswordRouteImport
+      parentRoute: typeof authRouteRoute
+    }
+    '/(auth)/accept-invitation': {
+      id: '/(auth)/accept-invitation'
+      path: '/accept-invitation'
+      fullPath: '/accept-invitation'
+      preLoaderRoute: typeof authAcceptInvitationRouteImport
+      parentRoute: typeof authRouteRoute
     }
     '/api/rpc/$': {
       id: '/api/rpc/$'
@@ -65,11 +228,54 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiRpcSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/auth/$': {
+      id: '/api/auth/$'
+      path: '/api/auth/$'
+      fullPath: '/api/auth/$'
+      preLoaderRoute: typeof ApiAuthSplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
+interface authRouteRouteChildren {
+  authAcceptInvitationRoute: typeof authAcceptInvitationRoute
+  authForgotPasswordRoute: typeof authForgotPasswordRoute
+  authOnboardingRoute: typeof authOnboardingRoute
+  authResetPasswordRoute: typeof authResetPasswordRoute
+  authSignInRoute: typeof authSignInRoute
+  authSignUpRoute: typeof authSignUpRoute
+}
+
+const authRouteRouteChildren: authRouteRouteChildren = {
+  authAcceptInvitationRoute: authAcceptInvitationRoute,
+  authForgotPasswordRoute: authForgotPasswordRoute,
+  authOnboardingRoute: authOnboardingRoute,
+  authResetPasswordRoute: authResetPasswordRoute,
+  authSignInRoute: authSignInRoute,
+  authSignUpRoute: authSignUpRoute,
+}
+
+const authRouteRouteWithChildren = authRouteRoute._addFileChildren(
+  authRouteRouteChildren,
+)
+
+interface dashboardRouteRouteChildren {
+  dashboardIndexRoute: typeof dashboardIndexRoute
+}
+
+const dashboardRouteRouteChildren: dashboardRouteRouteChildren = {
+  dashboardIndexRoute: dashboardIndexRoute,
+}
+
+const dashboardRouteRouteWithChildren = dashboardRouteRoute._addFileChildren(
+  dashboardRouteRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
+  authRouteRoute: authRouteRouteWithChildren,
+  dashboardRouteRoute: dashboardRouteRouteWithChildren,
+  ApiAuthSplatRoute: ApiAuthSplatRoute,
   ApiRpcSplatRoute: ApiRpcSplatRoute,
 }
 export const routeTree = rootRouteImport

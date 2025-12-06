@@ -3,13 +3,13 @@ import {
   createFileRoute,
   useRouter,
   useSearch,
-} from '@tanstack/react-router'
-import { useEffect, useState } from 'react'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'zod'
-import { toast } from 'sonner'
-import { Button } from '@/components/ui/button'
+} from "@tanstack/react-router";
+import { useEffect, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -17,39 +17,32 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card'
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form'
-import { PasswordInput } from '@/components/ui/password-input'
-import { Spinner } from '@/components/ui/spinner'
-import { authClient } from '@/lib/auth-client'
+} from "@/components/ui/card";
+import { Field, FieldError, FieldLabel } from "@/components/ui/field";
+import { PasswordInput } from "@/components/ui/password-input";
+import { Spinner } from "@/components/ui/spinner";
+import { authClient } from "@/lib/auth-client";
 
 const resetPasswordSchema = z
   .object({
-    password: z.string().min(8, 'Password must be at least 8 characters'),
+    password: z.string().min(8, "Password must be at least 8 characters"),
     confirmPassword: z
       .string()
-      .min(8, 'Password must be at least 8 characters'),
+      .min(8, "Password must be at least 8 characters"),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords don't match",
-    path: ['confirmPassword'],
-  })
+    path: ["confirmPassword"],
+  });
 
-type ResetPasswordFormValues = z.infer<typeof resetPasswordSchema>
+type ResetPasswordFormValues = z.infer<typeof resetPasswordSchema>;
 
-type ResetPasswordSearch = {
-  token?: string
-  email?: string
+interface ResetPasswordSearch {
+  token?: string;
+  email?: string;
 }
 
-export const Route = createFileRoute('/(auth)/reset-password')({
+export const Route = createFileRoute("/(auth)/reset-password")({
   component: ResetPassword,
   validateSearch: (search: Record<string, unknown>): ResetPasswordSearch => ({
     token: (search.token as string) || undefined,
@@ -58,37 +51,37 @@ export const Route = createFileRoute('/(auth)/reset-password')({
   head: () => ({
     meta: [
       {
-        title: 'Reset Password | Baseline',
+        title: "Reset Password | Streamline",
       },
     ],
   }),
-})
+});
 
 function ResetPassword() {
-  const router = useRouter()
-  const { token } = useSearch({ from: '/(auth)/reset-password' })
+  const router = useRouter();
+  const { token } = useSearch({ from: "/(auth)/reset-password" });
 
   const form = useForm<ResetPasswordFormValues>({
     resolver: zodResolver(resetPasswordSchema),
     defaultValues: {
-      password: '',
-      confirmPassword: '',
+      password: "",
+      confirmPassword: "",
     },
-  })
+  });
 
-  const [loading, setLoading] = useState(false)
-  const [tokenError, setTokenError] = useState<string | null>(null)
+  const [loading, setLoading] = useState(false);
+  const [tokenError, setTokenError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!token) {
-      setTokenError('Invalid or missing reset token')
+      setTokenError("Invalid or missing reset token");
     }
-  }, [token])
+  }, [token]);
 
   const onSubmit = async (data: ResetPasswordFormValues) => {
     if (!token) {
-      toast.error('Invalid or missing reset token')
-      return
+      toast.error("Invalid or missing reset token");
+      return;
     }
 
     await authClient.resetPassword(
@@ -98,23 +91,23 @@ function ResetPassword() {
       },
       {
         onRequest: () => {
-          setLoading(true)
+          setLoading(true);
         },
         onResponse: () => {
-          setLoading(false)
+          setLoading(false);
         },
         onSuccess: () => {
           toast.success(
-            'Password reset successful! You can now sign in with your new password.',
-          )
-          router.navigate({ to: '/sign-in' })
+            "Password reset successful! You can now sign in with your new password."
+          );
+          router.navigate({ to: "/sign-in" });
         },
-        onError: (ctx) => {
-          toast.error(ctx.error.message)
+        onError: (ctx: { error: { message: string } }) => {
+          toast.error(ctx.error.message);
         },
-      },
-    )
-  }
+      }
+    );
+  };
 
   if (tokenError) {
     return (
@@ -134,67 +127,73 @@ function ResetPassword() {
           </p>
         </CardFooter>
       </Card>
-    )
+    );
   }
 
   return (
     <Card className="w-full max-w-sm">
-      <CardHeader>
-        <CardTitle className="text-xl">Reset Password</CardTitle>
-        <CardDescription>Enter your new password below</CardDescription>
+      <CardHeader className="text-center">
+        <CardTitle className="text-xl">Set a new password</CardTitle>
+        <CardDescription>
+          Choose a strong password to secure your account
+        </CardDescription>
       </CardHeader>
-      <CardContent className="grid gap-4">
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4">
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>New Password</FormLabel>
-                  <FormControl>
-                    <PasswordInput
-                      placeholder="Enter your new password"
-                      {...field}
-                      disabled={loading}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="confirmPassword"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Confirm Password</FormLabel>
-                  <FormControl>
-                    <PasswordInput
-                      placeholder="Confirm your new password"
-                      {...field}
-                      disabled={loading}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <Button type="submit" className="w-full" disabled={loading}>
-              {loading && <Spinner />}
-              Reset Password
-            </Button>
-          </form>
-        </Form>
+      <CardContent>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4">
+          <Controller
+            name="password"
+            control={form.control}
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid}>
+                <FieldLabel htmlFor={field.name}>New Password</FieldLabel>
+                <PasswordInput
+                  {...field}
+                  id={field.name}
+                  placeholder="Enter your new password"
+                  aria-invalid={fieldState.invalid}
+                  disabled={loading}
+                  autoComplete="new-password"
+                />
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
+                )}
+              </Field>
+            )}
+          />
+          <Controller
+            name="confirmPassword"
+            control={form.control}
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid}>
+                <FieldLabel htmlFor={field.name}>Confirm Password</FieldLabel>
+                <PasswordInput
+                  {...field}
+                  id={field.name}
+                  placeholder="Confirm your new password"
+                  aria-invalid={fieldState.invalid}
+                  disabled={loading}
+                  autoComplete="new-password"
+                />
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
+                )}
+              </Field>
+            )}
+          />
+          <Button type="submit" className="w-full" disabled={loading}>
+            {loading && <Spinner />}
+            Reset Password
+          </Button>
+        </form>
       </CardContent>
       <CardFooter>
         <p className="text-sm text-muted-foreground text-center w-full">
-          Remember your password?{' '}
+          Remember your password?{" "}
           <Link to="/sign-in" className="text-primary hover:underline">
             Sign in
           </Link>
         </p>
       </CardFooter>
     </Card>
-  )
+  );
 }

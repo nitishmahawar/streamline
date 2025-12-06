@@ -4,33 +4,33 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card'
-import { authClient } from '@/lib/auth-client'
-import { createFileRoute, Link } from '@tanstack/react-router'
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { z } from 'zod'
-import { Button } from '@/components/ui/button'
-import { Mail, UserPlus, ArrowRight, AlertCircle } from 'lucide-react'
-import { Badge } from '@/components/ui/badge'
+} from "@/components/ui/card";
+import { authClient } from "@/lib/auth-client";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { z } from "zod";
+import { Button } from "@/components/ui/button";
+import { Mail, UserPlus, ArrowRight, AlertCircle } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 
 const acceptInvitationSearchSchema = z.object({
-  invite: z.string().default(''),
-})
+  invite: z.string().default(""),
+});
 
-export const Route = createFileRoute('/(auth)/accept-invitation')({
+export const Route = createFileRoute("/(auth)/accept-invitation")({
   component: RouteComponent,
   validateSearch: acceptInvitationSearchSchema,
   head: () => ({
     meta: [
       {
-        title: 'Accept Invitation | Baseline',
+        title: "Accept Invitation | Streamline",
       },
     ],
   }),
-})
+});
 
 function RouteComponent() {
-  const { invite } = Route.useSearch()
+  const { invite } = Route.useSearch();
 
   if (!invite) {
     return (
@@ -42,7 +42,7 @@ function RouteComponent() {
           person who invited you for a new invitation.
         </AlertDescription>
       </Alert>
-    )
+    );
   }
 
   return (
@@ -63,7 +63,7 @@ function RouteComponent() {
               <Mail className="size-5 text-muted-foreground mt-0.5" />
               <div className="flex-1 space-y-1">
                 <p className="text-sm font-medium">
-                  You've been invited to join an organization on Baseline.
+                  You've been invited to join an organization on Streamline.
                 </p>
                 <p className="text-sm text-muted-foreground">
                   Please sign in or create an account to accept this invitation.
@@ -97,5 +97,5 @@ function RouteComponent() {
         </p>
       </CardContent>
     </Card>
-  )
+  );
 }

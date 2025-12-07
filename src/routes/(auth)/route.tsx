@@ -1,4 +1,5 @@
 import { Outlet, createFileRoute, useLocation } from "@tanstack/react-router";
+import { Image } from "@unpic/react";
 
 export const Route = createFileRoute("/(auth)")({
   component: RouteComponent,
@@ -30,7 +31,12 @@ function RouteComponent() {
           }}
         />
       )}
-      <img src="/logo.svg" alt="logo" className="h-7 w-auto dark:invert" />
+      <Image
+        layout="fullWidth"
+        src="/logo-word.svg"
+        alt="logo"
+        className="h-7 w-auto dark:invert"
+      />
       <Outlet />
     </div>
   );

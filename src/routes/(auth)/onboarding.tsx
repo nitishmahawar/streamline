@@ -112,9 +112,19 @@ function RouteComponent() {
       .replace(/^-|-$/g, "");
   };
 
-  const handleNameChange = (value: string) => {
+  // Track if slug was manually edited
+  const isSlugManuallyEdited = (
+    currentSlug: string,
+    currentName: string
+  ): boolean => {
+    const expectedSlug = generateSlug(currentName);
+    return currentSlug !== expectedSlug && currentSlug !== "";
+  };
+
+  const handleNameChange = (value: string, previousName: string) => {
     const currentSlug = form.getValues("slug");
-    if (!currentSlug || currentSlug === generateSlug(form.getValues("name"))) {
+    // Only auto-update slug if it hasn't been manually edited
+    if (!isSlugManuallyEdited(currentSlug, previousName)) {
       const newSlug = generateSlug(value);
       form.setValue("slug", newSlug);
     }
@@ -128,12 +138,9 @@ function RouteComponent() {
     createWorkspaceMutation.isPending || form.formState.isSubmitting;
 
   return (
-    <Card className="w-full max-w-lg">
+    <Card className="w-full max-w-md relative">
       <CardHeader className="text-center">
-        <div className="mx-auto mb-4 flex size-12 items-center justify-center rounded-lg bg-primary/10">
-          <Building2 className="size-6 text-primary" />
-        </div>
-        <CardTitle className="text-2xl">Create Your Workspace</CardTitle>
+        <CardTitle className="text-xl">Create Your Workspace</CardTitle>
         <CardDescription>
           Set up your workspace to start collaborating with your team
         </CardDescription>
@@ -153,8 +160,9 @@ function RouteComponent() {
                   aria-invalid={fieldState.invalid}
                   disabled={isAnyLoading}
                   onChange={(e) => {
+                    const previousName = field.value;
                     field.onChange(e);
-                    handleNameChange(e.target.value);
+                    handleNameChange(e.target.value, previousName);
                   }}
                 />
                 <FieldDescription>

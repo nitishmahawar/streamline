@@ -12,14 +12,17 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as dashboardRouteRouteImport } from './routes/(dashboard)/route'
 import { Route as authRouteRouteImport } from './routes/(auth)/route'
 import { Route as dashboardIndexRouteImport } from './routes/(dashboard)/index'
+import { Route as dashboardMembersRouteImport } from './routes/(dashboard)/members'
 import { Route as authSignUpRouteImport } from './routes/(auth)/sign-up'
 import { Route as authSignInRouteImport } from './routes/(auth)/sign-in'
 import { Route as authResetPasswordRouteImport } from './routes/(auth)/reset-password'
 import { Route as authOnboardingRouteImport } from './routes/(auth)/onboarding'
 import { Route as authForgotPasswordRouteImport } from './routes/(auth)/forgot-password'
 import { Route as authAcceptInvitationRouteImport } from './routes/(auth)/accept-invitation'
+import { Route as dashboardProjectsIndexRouteImport } from './routes/(dashboard)/projects/index'
 import { Route as ApiRpcSplatRouteImport } from './routes/api.rpc.$'
 import { Route as ApiAuthSplatRouteImport } from './routes/api.auth.$'
+import { Route as dashboardProjectsProjectIdRouteImport } from './routes/(dashboard)/projects/$projectId'
 
 const dashboardRouteRoute = dashboardRouteRouteImport.update({
   id: '/(dashboard)',
@@ -32,6 +35,11 @@ const authRouteRoute = authRouteRouteImport.update({
 const dashboardIndexRoute = dashboardIndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => dashboardRouteRoute,
+} as any)
+const dashboardMembersRoute = dashboardMembersRouteImport.update({
+  id: '/members',
+  path: '/members',
   getParentRoute: () => dashboardRouteRoute,
 } as any)
 const authSignUpRoute = authSignUpRouteImport.update({
@@ -64,6 +72,11 @@ const authAcceptInvitationRoute = authAcceptInvitationRouteImport.update({
   path: '/accept-invitation',
   getParentRoute: () => authRouteRoute,
 } as any)
+const dashboardProjectsIndexRoute = dashboardProjectsIndexRouteImport.update({
+  id: '/projects/',
+  path: '/projects/',
+  getParentRoute: () => dashboardRouteRoute,
+} as any)
 const ApiRpcSplatRoute = ApiRpcSplatRouteImport.update({
   id: '/api/rpc/$',
   path: '/api/rpc/$',
@@ -74,6 +87,12 @@ const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   path: '/api/auth/$',
   getParentRoute: () => rootRouteImport,
 } as any)
+const dashboardProjectsProjectIdRoute =
+  dashboardProjectsProjectIdRouteImport.update({
+    id: '/projects/$projectId',
+    path: '/projects/$projectId',
+    getParentRoute: () => dashboardRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/accept-invitation': typeof authAcceptInvitationRoute
@@ -82,9 +101,12 @@ export interface FileRoutesByFullPath {
   '/reset-password': typeof authResetPasswordRoute
   '/sign-in': typeof authSignInRoute
   '/sign-up': typeof authSignUpRoute
+  '/members': typeof dashboardMembersRoute
   '/': typeof dashboardIndexRoute
+  '/projects/$projectId': typeof dashboardProjectsProjectIdRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/rpc/$': typeof ApiRpcSplatRoute
+  '/projects': typeof dashboardProjectsIndexRoute
 }
 export interface FileRoutesByTo {
   '/accept-invitation': typeof authAcceptInvitationRoute
@@ -93,9 +115,12 @@ export interface FileRoutesByTo {
   '/reset-password': typeof authResetPasswordRoute
   '/sign-in': typeof authSignInRoute
   '/sign-up': typeof authSignUpRoute
+  '/members': typeof dashboardMembersRoute
   '/': typeof dashboardIndexRoute
+  '/projects/$projectId': typeof dashboardProjectsProjectIdRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/rpc/$': typeof ApiRpcSplatRoute
+  '/projects': typeof dashboardProjectsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -107,9 +132,12 @@ export interface FileRoutesById {
   '/(auth)/reset-password': typeof authResetPasswordRoute
   '/(auth)/sign-in': typeof authSignInRoute
   '/(auth)/sign-up': typeof authSignUpRoute
+  '/(dashboard)/members': typeof dashboardMembersRoute
   '/(dashboard)/': typeof dashboardIndexRoute
+  '/(dashboard)/projects/$projectId': typeof dashboardProjectsProjectIdRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/rpc/$': typeof ApiRpcSplatRoute
+  '/(dashboard)/projects/': typeof dashboardProjectsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -120,9 +148,12 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/sign-in'
     | '/sign-up'
+    | '/members'
     | '/'
+    | '/projects/$projectId'
     | '/api/auth/$'
     | '/api/rpc/$'
+    | '/projects'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/accept-invitation'
@@ -131,9 +162,12 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/sign-in'
     | '/sign-up'
+    | '/members'
     | '/'
+    | '/projects/$projectId'
     | '/api/auth/$'
     | '/api/rpc/$'
+    | '/projects'
   id:
     | '__root__'
     | '/(auth)'
@@ -144,9 +178,12 @@ export interface FileRouteTypes {
     | '/(auth)/reset-password'
     | '/(auth)/sign-in'
     | '/(auth)/sign-up'
+    | '/(dashboard)/members'
     | '/(dashboard)/'
+    | '/(dashboard)/projects/$projectId'
     | '/api/auth/$'
     | '/api/rpc/$'
+    | '/(dashboard)/projects/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -177,6 +214,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof dashboardIndexRouteImport
+      parentRoute: typeof dashboardRouteRoute
+    }
+    '/(dashboard)/members': {
+      id: '/(dashboard)/members'
+      path: '/members'
+      fullPath: '/members'
+      preLoaderRoute: typeof dashboardMembersRouteImport
       parentRoute: typeof dashboardRouteRoute
     }
     '/(auth)/sign-up': {
@@ -221,6 +265,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof authAcceptInvitationRouteImport
       parentRoute: typeof authRouteRoute
     }
+    '/(dashboard)/projects/': {
+      id: '/(dashboard)/projects/'
+      path: '/projects'
+      fullPath: '/projects'
+      preLoaderRoute: typeof dashboardProjectsIndexRouteImport
+      parentRoute: typeof dashboardRouteRoute
+    }
     '/api/rpc/$': {
       id: '/api/rpc/$'
       path: '/api/rpc/$'
@@ -234,6 +285,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/api/auth/$'
       preLoaderRoute: typeof ApiAuthSplatRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/(dashboard)/projects/$projectId': {
+      id: '/(dashboard)/projects/$projectId'
+      path: '/projects/$projectId'
+      fullPath: '/projects/$projectId'
+      preLoaderRoute: typeof dashboardProjectsProjectIdRouteImport
+      parentRoute: typeof dashboardRouteRoute
     }
   }
 }
@@ -261,11 +319,17 @@ const authRouteRouteWithChildren = authRouteRoute._addFileChildren(
 )
 
 interface dashboardRouteRouteChildren {
+  dashboardMembersRoute: typeof dashboardMembersRoute
   dashboardIndexRoute: typeof dashboardIndexRoute
+  dashboardProjectsProjectIdRoute: typeof dashboardProjectsProjectIdRoute
+  dashboardProjectsIndexRoute: typeof dashboardProjectsIndexRoute
 }
 
 const dashboardRouteRouteChildren: dashboardRouteRouteChildren = {
+  dashboardMembersRoute: dashboardMembersRoute,
   dashboardIndexRoute: dashboardIndexRoute,
+  dashboardProjectsProjectIdRoute: dashboardProjectsProjectIdRoute,
+  dashboardProjectsIndexRoute: dashboardProjectsIndexRoute,
 }
 
 const dashboardRouteRouteWithChildren = dashboardRouteRoute._addFileChildren(

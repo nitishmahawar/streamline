@@ -63,18 +63,18 @@ export const auth = betterAuth({
     session: {
       create: {
         before: async (session) => {
-          //   const workspace = await prisma.organization.findFirst({
-          //     where: {
-          //       members: { some: { userId: session.userId } },
-          //     },
-          //   });
+          const organization = await prisma.organization.findFirst({
+            where: {
+              members: { some: { userId: session.userId } },
+            },
+          });
 
-          const workspaceId = null;
+          const organizationId = organization?.id || null;
 
           return {
             data: {
               ...session,
-              activeOrganizationId: workspaceId,
+              activeOrganizationId: organizationId,
             },
           };
         },

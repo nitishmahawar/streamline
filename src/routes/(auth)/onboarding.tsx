@@ -38,16 +38,16 @@ export const Route = createFileRoute("/(auth)/onboarding")({
 const onboardingSchema = z.object({
   name: z
     .string()
-    .min(1, "Workspace name is required")
-    .max(100, "Workspace name must be less than 100 characters"),
+    .min(1, { error: "Workspace name is required" })
+    .max(100, { error: "Workspace name must be less than 100 characters" }),
   slug: z
     .string()
-    .min(1, "Workspace URL is required")
-    .max(50, "Workspace URL must be less than 50 characters")
-    .regex(
-      /^[a-z0-9]+(?:-[a-z0-9]+)*$/,
-      "Workspace URL must be lowercase letters, numbers, and hyphens only"
-    ),
+    .min(1, { error: "Workspace URL is required" })
+    .max(50, { error: "Workspace URL must be less than 50 characters" })
+    .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, {
+      error:
+        "Workspace URL must be lowercase letters, numbers, and hyphens only",
+    }),
   metadata: z
     .object({
       description: z.string().optional(),

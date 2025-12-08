@@ -37,8 +37,10 @@ export const Route = createFileRoute("/(auth)/sign-in")({
 });
 
 const signInSchema = z.object({
-  email: z.string().email("Please enter a valid email address"),
-  password: z.string().min(8, "Password must be at least 8 characters"),
+  email: z.email({ error: "Please enter a valid email address" }),
+  password: z
+    .string()
+    .min(8, { error: "Password must be at least 8 characters" }),
 });
 
 type SignInFormValues = z.infer<typeof signInSchema>;

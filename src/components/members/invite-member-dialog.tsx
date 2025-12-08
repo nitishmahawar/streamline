@@ -34,7 +34,7 @@ import { Spinner } from "@/components/ui/spinner";
 import { authClient } from "@/lib/auth-client";
 
 const inviteSchema = z.object({
-  email: z.string().email("Please enter a valid email address"),
+  email: z.email({ error: "Please enter a valid email address" }),
   role: z.enum(["member", "admin"], {
     error: "Please select a role",
   }),

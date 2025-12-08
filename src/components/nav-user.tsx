@@ -1,11 +1,4 @@
-import {
-  CreditCard,
-  EllipsisVertical,
-  LogOut,
-  Bell,
-  User,
-  Settings,
-} from "lucide-react";
+import { EllipsisVertical, LogOut, Settings } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -21,14 +14,12 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  useSidebar,
 } from "@/components/ui/sidebar";
 import { useRouteContext, useRouter } from "@tanstack/react-router";
 import { authClient } from "@/lib/auth-client";
 
 export const NavUser = () => {
   const { user } = useRouteContext({ from: "__root__" });
-  const { isMobile } = useSidebar();
   const router = useRouter();
 
   const getInitials = (name: string) => {

@@ -25,13 +25,15 @@ import { authClient } from "@/lib/auth-client";
 
 const resetPasswordSchema = z
   .object({
-    password: z.string().min(8, "Password must be at least 8 characters"),
+    password: z
+      .string()
+      .min(8, { error: "Password must be at least 8 characters" }),
     confirmPassword: z
       .string()
-      .min(8, "Password must be at least 8 characters"),
+      .min(8, { error: "Password must be at least 8 characters" }),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords don't match",
+    error: "Passwords don't match",
     path: ["confirmPassword"],
   });
 

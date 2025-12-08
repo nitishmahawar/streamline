@@ -19,7 +19,7 @@ import { Spinner } from "@/components/ui/spinner";
 import { authClient } from "@/lib/auth-client";
 
 const forgotPasswordSchema = z.object({
-  email: z.string().email("Please enter a valid email address"),
+  email: z.email({ error: "Please enter a valid email address" }),
 });
 
 type ForgotPasswordForm = z.infer<typeof forgotPasswordSchema>;

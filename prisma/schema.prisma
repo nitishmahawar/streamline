@@ -179,6 +179,7 @@ model Task {
   position    Int // Order within the status column
   status      TaskStatus     @default(TODO)
   priority    TaskPriority?
+  startDate   DateTime?
   dueDate     DateTime?
   projectId   String
   project     Project        @relation(fields: [projectId], references: [id], onDelete: Cascade)

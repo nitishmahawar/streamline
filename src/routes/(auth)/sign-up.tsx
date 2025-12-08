@@ -37,15 +37,15 @@ export const Route = createFileRoute("/(auth)/sign-up")({
 });
 
 const signUpSchema = z.object({
-  name: z.string().min(1, "Name is required"),
-  email: z.string().email("Please enter a valid email address"),
+  name: z.string().min(1, { error: "Name is required" }),
+  email: z.email({ error: "Please enter a valid email address" }),
   password: z
     .string()
-    .min(8, "Password must be at least 8 characters")
-    .regex(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/,
-      "Password must contain at least one uppercase letter, one lowercase letter, one number and one special character"
-    ),
+    .min(8, { error: "Password must be at least 8 characters" })
+    .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/, {
+      error:
+        "Password must contain at least one uppercase letter, one lowercase letter, one number and one special character",
+    }),
 });
 
 type SignUpFormValues = z.infer<typeof signUpSchema>;

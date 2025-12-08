@@ -1,4 +1,3 @@
-import { SidebarTrigger } from "@/components/ui/sidebar";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/(dashboard)/")({
@@ -6,9 +5,5 @@ export const Route = createFileRoute("/(dashboard)/")({
 });
 
 function RouteComponent() {
-  return (
-    <div>
-      <SidebarTrigger />
-    </div>
-  );
+  return <div></div>;
 }
